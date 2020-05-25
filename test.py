@@ -1,13 +1,11 @@
 from core.window import Window
-from utils.colour import colour
+from utils.colour import Colours
 import cv2 as cv
 import time
 
-win = Window(200, 100)
+win = Window(800, 600)
 
-print(win.size)
-
-win.draw(50, 30, 100, 40, colour(95, 55, 245))
+win.draw(200, 150, 400, 300, Colours.RebeccaPurple)
 
 while True:
     key = cv.waitKey(100) &  0xFF
