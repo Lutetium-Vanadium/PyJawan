@@ -1,14 +1,16 @@
-from core.window import Window
-from utils.colour import Colours
 import cv2 as cv
 import numpy as np
 import time
+
+from core.window import Window
+from core.draw import Drawer
+from utils.colour import Colours
 
 from utils.constants import FRAME_RATE
 from utils.colour import colour
 
 win = Window(800, 600)
-win.draw(200, 150, 400, 300, Colours.RebeccaPurple)
+draw = Drawer(win)
 
 av_time = 0
 c = 0
@@ -20,7 +22,8 @@ while True:
         break
     
     t = time.time()
-    win.draw(200, 150, 400, 300, colour(np.random.randint(0, 256**3-1)))
+    # draw.rect(200, 150, 400, 300, colour(np.random.randint(0, 256**3-1)), thickness=10, fill=False)
+    draw.ellipse(200, 150, 400, 300, colour(np.random.randint(0, 256**3-1)), thickness=10, fill=False)
     if win.render():
         break
 
