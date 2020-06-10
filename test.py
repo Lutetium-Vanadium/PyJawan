@@ -9,7 +9,7 @@ from utils.colour import Colours
 from utils.constants import FRAME_RATE
 from utils.colour import colour
 
-win = Window(800, 600)
+win = Window(1920, 1080)
 draw = Drawer(win)
 
 av_time = 0
@@ -22,8 +22,7 @@ while True:
         break
     
     t = time.time()
-    # draw.rect(200, 150, 400, 300, colour(np.random.randint(0, 256**3-1)), thickness=10, fill=False)
-    draw.ellipse(200, 150, 400, 300, colour(np.random.randint(0, 256**3-1)), thickness=10, fill=False)
+    draw.polygon([[200, 390], [420, 104], [66, 88]], colour(np.random.randint(0, 256**3-1)), thickness=1)
     if win.render():
         break
 
