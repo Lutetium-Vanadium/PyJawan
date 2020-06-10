@@ -27,24 +27,29 @@ class Drawer:
         colour = self._regularizeColour(colour)
         cv.line(self.window.img, (x1, y1), (x2, y2), colour,thickness)
 
-    def ellipse(self, x, y, w, h, colour=(0, 0, 0), thickness=0, fill=True):
+
+    def ellipse(self, x, y, w, h, colour=(0, 0, 0), angle=0, thickness=0, fill=True):
         colour = self._regularizeColour(colour)
-        cv.ellipse(self.window.img, (x, y, w, h), colour)#, thickness=-1 if fill else thickness)
+        cv.ellipse(self.window.img, (x+w//2, y+h//2), (w//2, h//2), angle, 0, 360, colour, thickness=thickness)
+
 
     # TODO arc
-    def arc(self, start_pt, stop_pt, start_angle=0, stop_angle=90, thickness=0):
-        pass
+    def curve(self, start_pt, stop_pt, start_angle=0, stop_angle=90, thickness=0):
+        
 
-    def polygon(self, vertices, thickness=0, fill=True):
+
+    def polygon(self, vertices, colour=(0, 0, 0), thickness=0, fill=True):
         colour = self._regularizeColour(colour)
         cv.polylines(self.window.img, [np.array(vertices).reshape((-1, 1, 2))], fill, colour, thickness)
+
 
     def gradient(self, x, y, w, h, colour1=(0, 0, 0), colour2=(0, 0, 0)):
         c1 = np.full((1, h, 3), colour1, dtype=np.uint8)
         c2 = np.full((1, h, 3), colour2, dtype=np.uint8)
         base = np.concatenate([c1, c2], axis=0)
-        grad = cv.resize(base, (w, h), cv.INTER_LINEAR)
-        self.window[x:x+w,y:y+w] = grad
+        grad = cv.resize(base, (h, w), cv.INTER_LINEAR)
+        self.window.img[x:x+w,y:y+h] = grad
+
 
     def text(self, x, y, font_name=None):
         img = Image.fromarray(self.window)
