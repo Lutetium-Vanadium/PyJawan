@@ -27,7 +27,6 @@ class Window():
         
         cv.imshow(self.name, self.img)
 
-
         return False
 
     def close(self):
