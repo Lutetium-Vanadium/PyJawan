@@ -1,6 +1,5 @@
 import numpy as np
 import cv2 as cv
-from utils.colour import Colours
 
 class Window():
     def __init__(self, width, height, name="GUI lib"):
@@ -31,8 +30,3 @@ class Window():
 
     def close(self):
         cv.destroyAllWindows()
-
-    def draw(self, x, y, width, height, colour):
-        if isinstance(colour, Colours):
-            colour = colour.value
-        self.img[y:y+height, x:x+width] = colour
