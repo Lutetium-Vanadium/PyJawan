@@ -5,7 +5,7 @@ from utils.colour import Colours
 class Window():
     def __init__(self, width, height, name="GUI lib"):
         self.name = name
-        self.img = np.random.randint(0, 256, (height, width, 3), dtype=np.uint8)
+        self.img = np.zeros((height, width, 3), dtype=np.uint8)
         self.window = cv.namedWindow(name, cv.WINDOW_NORMAL | cv.WINDOW_GUI_NORMAL)
         cv.resizeWindow(name, width, height)
 
