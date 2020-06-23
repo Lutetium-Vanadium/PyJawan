@@ -23,7 +23,7 @@ while True:
     
     t = time.time()
     # draw.polygon([[200, 390], [420, 104], [66, 88]], Color(np.random.randint(0, 256**3-1)), thickness=1, fill=True)
-    draw.text("Hello, World!", 100, 200, color=Color(np.random.randint(0, 256**3-1)))
+    draw.text("Hello, World!", 100, 200, 50, color=Color(np.random.randint(0, 256**3-1)))
     if win.render():
         break
 
