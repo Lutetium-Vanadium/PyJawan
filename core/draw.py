@@ -2,7 +2,7 @@ import cv2 as cv
 import numpy as np
 
 from scipy.special import comb
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
 
 from utils.color import Color
 
@@ -79,8 +79,12 @@ class Drawer:
         self.window.img[x:x+w,y:y+h] = grad
 
 
-    def text(self, text, x, y, font_name=None, color=Color.Black):
+    def text(self, text, x, y, size=10, font_name="sans-serif", font_path="", color=Color.Black):
+        if font_name in ("monospace", "serif", "sans-serif"):
+            font = ImageFont.truetype(f"utils/fonts/{font_name}.ttf", size)
+        else:
+            font = ImageFont.load(font_path, size)
         img = Image.fromarray(self.window.img)
         draw = ImageDraw.Draw(img)
-        draw.text((x, y), text, font = self.fonts.get(font_name), fill=color.bgr)
+        draw.text((x, y), text, font=font, fill=color.bgr)
         self.window.img = np.array(img)
