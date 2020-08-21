@@ -3,6 +3,9 @@ import cv2 as cv
 from utils.constants import EventType
 from types import FunctionType
 import time
+from core.event import *
+from pynput import mouse, keyboard
+
 
 class Window():
     def __init__(self, width: int, height: int, name="GUI lib"):
@@ -16,6 +19,7 @@ class Window():
             EventType.MouseClick: {},
             EventType.MouseMove: {}
         }
+        self.mouseEvent = None
 
     @property
     def height(self):
@@ -54,3 +58,14 @@ class Window():
 
     def off(self, event_type: EventType, handler_id: str):
         self.handlers[event_type].pop(handler_id)
+
+    def _callHandler(self, event_type: EventType, event: Event):
+        if event_type == EventType.MouseMove:
+            self.mouseEvent = event
+
+        for handler in self.handlers[event_type].values():
+            hander(event)
+
+    def _registerListener(self):
+        with pynput.mouse.Listener(on_move=lambda x, y: self._callHandler(EventType.MouseMove, MouseMoveEvent(x, y, self.mouseEvent)) as listener:
+            listener.join()
