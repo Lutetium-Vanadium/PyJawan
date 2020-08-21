@@ -53,6 +53,7 @@ class Drawer:
 
 
     def arc(self, start_pt, stop_pt, start_angle=0, stop_angle=90, color=Color.Black, thickness=0):
+        # TODO
         pass
 
   
@@ -68,7 +69,7 @@ class Drawer:
         if fill:
             cv.fillPoly(self.window.img, [np.array(vertices).reshape((-1, 1, 2))], color.bgr)
         else:
-            cv.polylines(self.window.img, [np.array(vertices).reshape((-1, 1, 2))], closed, color.bgr, thickness=thickness)
+            cv.polylines(self.window.img, [np.array(vertices).reshape((-1, 1, 2))], True, color.bgr, thickness=thickness)
 
 
     def gradient(self, x, y, w, h, color1=Color.Black, color2=Color.Black):

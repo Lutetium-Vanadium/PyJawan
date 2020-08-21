@@ -8,3 +8,4 @@ class EventType(Enum):
     Keypress = auto()
     MouseMove = auto()
     MouseClick = auto()
+    

@@ -1,15 +1,21 @@
 import numpy as np
 import cv2 as cv
 from utils.constants import EventType
-
+from types import FunctionType
+import time
 
 class Window():
-    def __init__(self, width, height, name="GUI lib"):
+    def __init__(self, width: int, height: int, name="GUI lib"):
         self.name = name
         self.img = np.zeros((height, width, 3), dtype=np.uint8)
         self.window = cv.namedWindow(
             name, cv.WINDOW_NORMAL | cv.WINDOW_GUI_NORMAL)
         cv.resizeWindow(name, width, height)
+        self.handlers = {
+            EventType.Keypress: {},
+            EventType.MouseClick: {},
+            EventType.MouseMove: {}
+        }
 
     @property
     def height(self):
@@ -25,14 +31,26 @@ class Window():
 
     def render(self):
         if cv.getWindowProperty(self.name, 4) == 0:
-            return True
+            return False
 
         cv.imshow(self.name, self.img)
 
-        return False
+        return True
+
+    # def loop(self, main: FunctionType, delay: int):
+    #     while self.render():
+    #         current_time = time.time()
+    #         key = cv.waitKey(delay) &  0xFF
+    #         dt = time.time() - current_time
+    #         if dt > delay:
+    #             time.sleep(delay - dt)
+    #         main()
 
     def close(self):
         cv.destroyAllWindows()
 
-    def on(self, event_type: EventType):
-        if event_type == EventType.Keypress:
+    def on(self, event_type: EventType, handler_id: str, fn: FunctionType):
+        self.handlers[event_type][handler_id] = fn
+
+    def off(self, event_type: EventType, handler_id: str):
+        self.handlers[event_type].pop(handler_id)
