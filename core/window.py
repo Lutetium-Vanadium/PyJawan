@@ -15,11 +15,13 @@ class Window():
             name, cv.WINDOW_NORMAL | cv.WINDOW_GUI_NORMAL)
         cv.resizeWindow(name, width, height)
         self.handlers = {
-            EventType.Keypress: {},
+            EventType.KeyUp: {},
+            EventType.KeyDown: {},
             EventType.MouseClick: {},
             EventType.MouseMove: {}
         }
         self.mouseEvent = None
+        self._registerListener()
 
     @property
     def height(self):
@@ -64,8 +66,23 @@ class Window():
             self.mouseEvent = event
 
         for handler in self.handlers[event_type].values():
-            hander(event)
+            handler(event)
 
     def _registerListener(self):
-        with pynput.mouse.Listener(on_move=lambda x, y: self._callHandler(EventType.MouseMove, MouseMoveEvent(x, y, self.mouseEvent)) as listener:
-            listener.join()
+        mouse_listener = mouse.Listener(
+            on_move=lambda x, y: self._callHandler(
+                EventType.MouseMove, MouseMoveEvent(x, y, self.mouseEvent)),
+            on_click=lambda x, y, btn, pressed: self._callHandler(
+                EventType.MouseClick, MouseClickEvent(x, y, btn, pressed))
+        )
+
+        mouse_listener.start()
+
+        key_listener = keyboard.Listener(
+            on_press=lambda key: self._callHandler(
+                EventType.KeyDown, KeyDownEvent(key)),
+            on_release=lambda key: self._callHandler(
+                EventType.KeyUp, KeyUpEvent(key))
+        )
+
+        key_listener.start()

@@ -5,7 +5,7 @@ class Event:
     pass
 
 
-class KeydownEvent(Event):
+class KeyDownEvent(Event):
     def __init__(self, key: keyboard.Key):
         self.key = key
 
@@ -17,7 +17,7 @@ class KeydownEvent(Event):
             return None
 
 
-class KeyupEvent(Event):
+class KeyUpEvent(Event):
     def __init__(self, key: keyboard.Key):
         self.key = key
 
@@ -33,7 +33,7 @@ class MouseMoveEvent(Event):
     def __init__(self, mouseX: int, mouseY: int, prev_event):
         self.x = mouseX
         self.y = mouseY
-        if prev_event == None:
+        if prev_event != None:
             self.prev_x = prev_event.x
             self.prev_y = prev_event.y
         else:

@@ -5,7 +5,7 @@ FRAME_RATE = 50
 
 @unique
 class EventType(Enum):
-    Keypress = auto()
+    KeyUp = auto()
+    KeyDown = auto()
     MouseMove = auto()
     MouseClick = auto()
-    
