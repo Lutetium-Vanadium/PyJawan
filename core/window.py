@@ -5,9 +5,10 @@ from types import FunctionType
 import time
 from core.event import *
 from pynput import mouse, keyboard
+from core.surface import Surface
 
 
-class Window():
+class Window(Surface):
     def __init__(self, width: int, height: int, name="GUI lib"):
         self.name = name
         self.img = np.zeros((height, width, 3), dtype=np.uint8)
