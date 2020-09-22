@@ -2,9 +2,7 @@ import cv2 as cv
 import numpy as np
 import time
 
-from core.window import Window
-from core.draw import Drawer
-# from core.event import *
+from core import Window, Drawer
 
 from utils.constants import FRAME_RATE, EventType
 from utils.color import Color
@@ -30,7 +28,7 @@ draw.gradient(win, 200, 300, 50, 60,
               color1=Color(np.random.randint(0, 256**3-1)), color2=Color(np.random.randint(0, 256**3-1)))
 draw.curve(win, [[200, 390], [420, 104], [66, 88]], Color(
     np.random.randint(0, 256**3-1)), thickness=1, fill=True)
-
+draw.image(win, "test.jpg", 70, 80)
 
 while True:
     key = cv.waitKey(100) & 0xFF
