@@ -4,8 +4,8 @@ import time
 
 from core import Window, Drawer
 
-from utils.constants import FRAME_RATE, EventType
-from utils.color import Color
+from utils import FRAME_RATE, EventType, Color
+from ui import Button
 
 win = Window(1920, 1080)
 draw = Drawer()
@@ -13,6 +13,7 @@ draw = Drawer()
 av_time = 0
 c = 0
 
+button = Button(100, 20, 300, 200)
 
 draw.polygon(win, [[200, 390], [420, 104], [66, 88]], Color(
     np.random.randint(0, 256**3-1)), thickness=1, fill=True)
@@ -29,6 +30,7 @@ draw.gradient(win, 200, 300, 50, 60,
 draw.curve(win, [[200, 390], [420, 104], [66, 88]], Color(
     np.random.randint(0, 256**3-1)), thickness=1, fill=True)
 draw.image(win, "test.jpg", 70, 80)
+button.draw(win, draw)
 
 while True:
     key = cv.waitKey(100) & 0xFF

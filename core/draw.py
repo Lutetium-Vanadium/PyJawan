@@ -4,14 +4,14 @@ import numpy as np
 from scipy.special import comb
 from PIL import Image, ImageDraw, ImageFont
 
-from utils.color import Color
+from utils.color import Color, color
 from core.surface import Surface
 
 
 class Drawer:
-    def __init__(self):
+    def __init__(self, surf: Surface = None):
         self.fonts = {}
-
+        self.surface = surf
     # SECTION Helper Functions
 
     def _bernstein_poly(self, i, n, t):
@@ -43,8 +43,15 @@ class Drawer:
         cv.rectangle(surf.img, (x, y), (x+w, y+h),
                      color.bgr, -1 if fill else thickness)
 
+    def fill(self, surf: Surface, color=Color.Black):
+        surf.img[:, :] = color
+
     def line(self, surf: Surface, x1: int, y1: int, x2: int, y2: int, color=Color.Black, thickness=1):
         cv.line(surf.img, (x1, y1), (x2, y2), color.bgr, thickness)
+
+    def circle(self, surf: Surface, x: int, y: int, r: int, color=Color.Black, thickness=1, fill=False):
+        cv.ellipse(surf.img, (x+r//2, y+r//2), (r//2, r//2),
+                   None, 0, 360, color.bgr, thickness=-1 if fill else thickness)
 
     def ellipse(self, surf: Surface, x: int, y: int, w: int, h: int, color=Color.Black, angle=0, thickness=1, fill=False):
         cv.ellipse(surf.img, (x+w//2, y+h//2), (w//2, h//2),

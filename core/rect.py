@@ -19,7 +19,7 @@ class Rect:
     def area(self) -> int:
         return self.w * self.h
 
-    def collides(self, other: Rect) -> bool:
+    def collides(self, rect: Rect) -> bool:
         return rect.x < self.x < rect.x + rect.w and rect.y < self.y < rect.y + rect.h
 
     def top_left(self) -> Tuple[int, int]:

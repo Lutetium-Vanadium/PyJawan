@@ -1,27 +1,29 @@
 from enum import Enum, unique
 
+
 class _Color:
     def __init__(self, col):
         r = (col >> 16) & 0xff
-        g = (col >>  8) & 0xff
-        b = (col >>  0) & 0xff
+        g = (col >> 8) & 0xff
+        b = (col >> 0) & 0xff
 
         self.bgr = (b, g, r)
 
+
 class Color(_Color):
-    def _hexFromString(self, string): 
+    def _hexFromString(self, string):
         origstr = string[::-1]
         string = origstr.upper()
-        val = 0 
-        for i in range(len(string)): 
-            if string[i].isdigit(): 
-                val += 16**i * int(string[i]) 
-            elif 65 <= ord(string[i]) <= 70: 
-                val += 16**i * (ord(string[i]) - 55) 
-            else: 
-                raise ValueError("Unknown character " + origstr[i]) 
-    
-        return val 
+        val = 0
+        for i in range(len(string)):
+            if string[i].isdigit():
+                val += 16**i * int(string[i])
+            elif 65 <= ord(string[i]) <= 70:
+                val += 16**i * (ord(string[i]) - 55)
+            else:
+                raise ValueError("Unknown character " + origstr[i])
+
+        return val
 
     def _colorFromList(self, lst):
         for i in lst:
@@ -29,12 +31,18 @@ class Color(_Color):
                 raise TypeError(f"{i} must be of type int")
         return tuple(lst[::-1])
 
+    # Color(r, g, b)
+    # Color((r, g, b))
+    # Color("#rrggbb")
+    # Color("#rgb")
+    # Color(0xRRGGBB)
+
     def __init__(self, r, g=None, b=None):
         if g == None and b == None:
             if isinstance(r, int):
-                red   = (r >> 16) & 0xff
-                green = (r >>  8) & 0xff
-                blue  = (r >>  0) & 0xff
+                red = (r >> 16) & 0xff
+                green = (r >> 8) & 0xff
+                blue = (r >> 0) & 0xff
 
                 self.bgr = (blue, green, red)
             elif isinstance(r, (list, tuple)):
@@ -44,7 +52,8 @@ class Color(_Color):
 
             elif isinstance(r, str):
                 if r[0] != "#" or (len(r) != 7 and len(r) != 4):
-                    raise ValueError("Colors should be in the form '#rrggbb' or '#rgb'\nIf in the form '#rgb' it will automaticallty repeat the r, g, b values.\neg: #345 => #334455")
+                    raise ValueError(
+                        "Colors should be in the form '#rrggbb' or '#rgb'\nIf in the form '#rgb' it will automaticallty repeat the r, g, b values.\neg: #345 => #334455")
                 if len(r) == 4:
                     red = self._hexFromString(r[1]*2)
                     green = self._hexFromString(r[2]*2)
@@ -53,13 +62,14 @@ class Color(_Color):
                     red = self._hexFromString(r[1:3])
                     green = self._hexFromString(r[3:5])
                     blue = self._hexFromString(r[5:7])
-                    
+
                 self.bgr = (blue, green, red)
             else:
                 raise TypeError("Unknwon Type " + str(type(r)))
 
         elif g == None or b == None:
-            raise ValueError("This function only accepts either one or three arguments")
+            raise ValueError(
+                "This function only accepts either one or three arguments")
 
         else:
             self.bgr = self._colorFromList([r, g, b])
