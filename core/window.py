@@ -63,6 +63,18 @@ class Window(Surface):
         self.handlers[event_type].pop(handler_id)
 
     def _callHandler(self, event_type: EventType, event: Event):
+        if event_type == EventType.MouseMove or event_type == EventType.MouseClick:
+            win_rect = cv.getWindowImageRect(self.name)
+            event.x -= win_rect[0]
+            event.y -= win_rect[1]
+
+            event.x /= win_rect[2]
+            event.y /= win_rect[3]
+
+            # Out of bounds
+            if event.x < 0 or event.x >= self.width or event.y < 0 or event.y >= self.height:
+                return
+
         if event_type == EventType.MouseMove:
             self.mouseEvent = event
 

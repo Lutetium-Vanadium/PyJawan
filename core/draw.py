@@ -4,7 +4,7 @@ import numpy as np
 from scipy.special import comb
 from PIL import Image, ImageDraw, ImageFont
 
-from utils.color import Color, color
+from utils.color import Color
 from core.surface import Surface
 
 
@@ -50,11 +50,11 @@ class Drawer:
         cv.line(surf.img, (x1, y1), (x2, y2), color.bgr, thickness)
 
     def circle(self, surf: Surface, x: int, y: int, r: int, color=Color.Black, thickness=1, fill=False):
-        cv.ellipse(surf.img, (x+r//2, y+r//2), (r//2, r//2),
-                   None, 0, 360, color.bgr, thickness=-1 if fill else thickness)
+        cv.ellipse(surf.img, (x, y), (r, r),
+                   360, 0, 360, color.bgr, thickness=-1 if fill else thickness)
 
     def ellipse(self, surf: Surface, x: int, y: int, w: int, h: int, color=Color.Black, angle=0, thickness=1, fill=False):
-        cv.ellipse(surf.img, (x+w//2, y+h//2), (w//2, h//2),
+        cv.ellipse(surf.img, (x, y), (w//2, h//2),
                    angle, 0, 360, color.bgr, thickness=-1 if fill else thickness)
 
     def arc(self, surf: Surface, start_pt: int, stop_pt: int, start_angle=0, stop_angle=90, color=Color.Black, thickness=0):

@@ -1,5 +1,3 @@
-
-from core.draw import Drawer
 import numpy as np
 import cv2 as cv
 from utils.constants import EventType
@@ -9,7 +7,6 @@ from types import FunctionType
 class Surface:
     def __init__(self, width: int, height: int, name=""):
         self.img = np.zeros((height, width, 3), dtype=np.uint8)
-        self.drawer = Drawer(self)
 
     @property
     def height(self):
