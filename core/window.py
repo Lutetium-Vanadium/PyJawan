@@ -10,8 +10,8 @@ from core.surface import Surface
 
 class Window(Surface):
     def __init__(self, width: int, height: int, name="GUI lib"):
+        super().__init__(width, height)
         self.name = name
-        self.img = np.zeros((height, width, 3), dtype=np.uint8)
         self.window = cv.namedWindow(
             name, cv.WINDOW_NORMAL | cv.WINDOW_GUI_NORMAL)
         cv.resizeWindow(name, width, height)
@@ -50,7 +50,7 @@ class Window(Surface):
             key = cv.waitKey(delay) & 0xFF
             dt = time.time() - current_time
             if dt < delay:
-                time.sleep(delay - dt)
+                time.sleep((delay - dt) / 1000)
             main(dt)
 
     def close(self):
@@ -68,8 +68,8 @@ class Window(Surface):
             event.x -= win_rect[0]
             event.y -= win_rect[1]
 
-            event.x *= self.width/win_rect[2]
-            event.y *= self.height/win_rect[3]
+            event.x *= self.width / win_rect[2]
+            event.y *= self.height / win_rect[3]
 
             # Out of bounds
             if event.x < 0 or event.x >= self.width or event.y < 0 or event.y >= self.height:

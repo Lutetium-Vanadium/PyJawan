@@ -13,7 +13,7 @@ draw = Drawer()
 av_time = 0
 c = 0
 
-button = Button(100, 20, 300, 79, bg_col=Color.RebeccaPurple,
+button = Button(100, 20, 300, 79, text="Hello There", bg_col=Color.RebeccaPurple,
                 hov_bg_col=Color.Red, border_radius=10)
 
 button.register(win)
@@ -38,6 +38,8 @@ button.on_click(print)
 # draw.circle(win, 100, 200, 50, color=Color(
 #     np.random.randint(0, 256**3-1)), fill=True)
 # draw.rect(win, 100, 200, 10, 10, color=Color.Red, fill=True)
+
+win.loop()
 
 while True:
     key = cv.waitKey(100) & 0xFF
