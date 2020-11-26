@@ -109,8 +109,6 @@ class Drawer:
             self.images[path] = im
 
         im = cv.resize(im, (rect.w, rect.h))
-        # FIXME: DELETE
-        import sys
         try:
             mask = 255 * np.zeros((*im.shape[:2], 3), dtype=np.uint8)
             mask[im[:, :, 3] == 0] = 255
@@ -121,4 +119,4 @@ class Drawer:
 
         except:
             surf.img[rect.y: rect.y + rect.h, rect.x: rect.x +
-                     rect.w] = cv.cvtColor(im, cv.COLOR_BGRA2BGR)
+                     rect.w] = im
