@@ -3,6 +3,8 @@ import numpy as np
 
 from math import factorial
 from PIL import Image, ImageDraw, ImageFont
+from numpy.core.fromnumeric import shape
+from numpy.core.numeric import zeros_like
 
 from utils.color import Color
 from core.rect import Rect
@@ -107,11 +109,16 @@ class Drawer:
             self.images[path] = im
 
         im = cv.resize(im, (rect.w, rect.h))
-        # try:
-        #     mask = np.zeros_like()
-        #     (im[:, :, 3] > 0.5)
+        # FIXME: DELETE
+        import sys
+        try:
+            mask = 255 * np.zeros((*im.shape[:2], 3), dtype=np.uint8)
+            mask[im[:, :, 3] == 0] = 255
+            surf.img[rect.y:rect.y + rect.h, rect.x:rect.x + rect.w] = (
+                im[:, :, :-1] | surf.img[rect.y:rect.y +
+                                         rect.h, rect.x: rect.x + rect.w] & mask
+            )
 
-        # except:
-        #     pass
-        surf.img[rect.y:rect.y + rect.h, rect.x:rect.x +
-                 rect.w] = cv.cvtColor(im, cv.COLOR_BGRA2BGR)
+        except:
+            surf.img[rect.y: rect.y + rect.h, rect.x: rect.x +
+                     rect.w] = cv.cvtColor(im, cv.COLOR_BGRA2BGR)
