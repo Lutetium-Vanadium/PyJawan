@@ -1,6 +1,6 @@
 import sys
 sys.path.append("../")
-from core import Window, Drawer, Surface, Rect, KeyDownEvent
+from core import Window, Drawer, Surface, Rect, KeyDownEvent, Key
 from engine import Sprite
 from utils import FRAME_RATE, EventType, Color
 import os
@@ -118,11 +118,12 @@ bird = Bird(100, 360, "./assets/bird_up.png",
             "./assets/bird_down.png")
 
 
-# def handle_key(e: KeyDownEvent):
-#     if e.key ==
+def handle_key(e: KeyDownEvent):
+    if e.key == Key.space:
+        bird.jump()
 
 
-win.on(EventType.KeyDown, 'space-handler', print)
+win.on(EventType.KeyDown, 'space-handler', handle_key)
 
 
 def main(dt: int):
@@ -135,6 +136,6 @@ def main(dt: int):
     bird.update(win.height)
 
 
-win.off(EventType.KeyDown, 'space-handler')
 win.loop(main)
+win.off(EventType.KeyDown, 'space-handler')
 win.close()
