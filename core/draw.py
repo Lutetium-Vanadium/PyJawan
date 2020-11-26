@@ -103,8 +103,15 @@ class Drawer:
     def image(self, surf, path: str, rect: Rect):
         im = self.images.get(path)
         if im is None:
-            im = cv.imread(path)
+            im = cv.imread(path, cv.IMREAD_UNCHANGED)
             self.images[path] = im
 
         im = cv.resize(im, (rect.w, rect.h))
-        surf.img[rect.y:rect.y + rect.h, rect.x:rect.x + rect.w] = im
+        # try:
+        #     mask = np.zeros_like()
+        #     (im[:, :, 3] > 0.5)
+
+        # except:
+        #     pass
+        surf.img[rect.y:rect.y + rect.h, rect.x:rect.x +
+                 rect.w] = cv.cvtColor(im, cv.COLOR_BGRA2BGR)

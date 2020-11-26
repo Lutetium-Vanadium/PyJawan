@@ -17,7 +17,12 @@ class Rect:
         return self.w * self.h
 
     def collides(self, rect) -> bool:
-        return rect.x < self.x < rect.x + rect.w and rect.y < self.y < rect.y + rect.h
+        return (
+            (self.x + self.w >= rect.x) and
+            (self.x <= rect.x + rect.w) and
+            (self.y + self.h >= rect.y) and
+            (self.y <= rect.y + rect.h)
+        )
 
     def top_left(self):
         return (self.x, self.y)

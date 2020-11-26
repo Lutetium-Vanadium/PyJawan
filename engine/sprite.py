@@ -13,6 +13,7 @@ class Sprite:
         pass
 
     def kill(self):
+        print('Life is soup, I am fork -', str(self))
         self.alive = False
 
     def collides(self, sprite) -> bool:
