@@ -68,8 +68,8 @@ class Window(Surface):
             event.x -= win_rect[0]
             event.y -= win_rect[1]
 
-            event.x /= win_rect[2]
-            event.y /= win_rect[3]
+            event.x *= self.width/win_rect[2]
+            event.y *= self.height/win_rect[3]
 
             # Out of bounds
             if event.x < 0 or event.x >= self.width or event.y < 0 or event.y >= self.height:
