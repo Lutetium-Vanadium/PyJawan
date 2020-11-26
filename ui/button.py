@@ -5,7 +5,7 @@ from utils import Color
 
 
 class Button:
-    def __init__(self, x, y, w, h, text='',
+    def __init__(self, x: int, y: int, w: int, h: int, text='',
                  text_col=Color.Black, hov_text_col=Color.Black,
                  font_size=16,
                  bg_col=Color.LightGray, hov_bg_col=Color.Gray,
