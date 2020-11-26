@@ -1,7 +1,7 @@
 import cv2 as cv
 import numpy as np
 
-from scipy.special import comb
+from math import factorial
 from PIL import Image, ImageDraw, ImageFont
 
 from utils.color import Color
@@ -17,7 +17,7 @@ class Drawer:
     # SECTION Helper Functions
 
     def _bernstein_poly(self, i, n, t):
-        return comb(n, i) * (t**(n - i)) * (1 - t)**i
+        return factorial(n) / (factorial(i) * factorial(n - i)) * (t**(n - i)) * (1 - t)**i
 
     def _bezier_curve(self, points, resol=1000):
 
