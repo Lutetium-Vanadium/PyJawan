@@ -1,10 +1,8 @@
 import sys
 sys.path.append("../")
-from core import Window, Drawer, Surface, Rect
+from core import Window, Drawer, Surface, Rect, KeyDownEvent
 from engine import Sprite
-from utils.constants import FRAME_RATE, EventType
-from utils.color import Color
-from core import Window, Drawer
+from utils import FRAME_RATE, EventType, Color
 import os
 from random import randint
 from typing import Tuple
@@ -12,13 +10,14 @@ from typing import Tuple
 
 # SECTION Constants
 
-MAX_VERTICAL_VEL = 15
-MIN_VERTICAL_VEL = -15
+MAX_VERTICAL_VEL = -15
+MIN_VERTICAL_VEL = 15
 SPEED = 10
 SLIT_WIDTH = 200
 PIPE_SEP = 100
 UP_ACCEL = -50
 DOWN_ACCEL = 50
+GRAVITY = 3
 
 # !SECTION Constants
 
@@ -64,29 +63,44 @@ class Pipe(Sprite):
 
 
 class Bird(Sprite):
-    def __init__(self, x, y, up_im: str, down_im: str, accel=DOWN_ACCEL):
+    def __init__(self, x, y, up_im: str, down_im: str, accel=GRAVITY):
         super().__init__(x, y, 40, 40)
         self.accel = accel
         self.up_im = up_im
         self.down_im = down_im
         self.vertical_velocity = 0
 
+    def livent(self):
+        print("Life is soup, I am fork")
+        self.alive = False
+
+    def jump(self):
+        self.accel = UP_ACCEL
+
     def render(self, surf: Surface):
         if not self.alive:
             return
         if self.vertical_velocity > 0:
-            surf.drawer.image()
+            surf.drawer.image(surf, self.down_im, self.rect)
         else:
-            surf.drawer.image(self.down_im, self.pos)
+            surf.drawer.image(surf, self.up_im, self.rect)
 
-    def update(self):
+    def update(self, win_height: int):
         if not self.alive:
             return
 
+        print(self.vertical_velocity, self.accel)
         self.vertical_velocity += self.accel
         self.vertical_velocity = max(self.vertical_velocity, MAX_VERTICAL_VEL)
         self.vertical_velocity = min(self.vertical_velocity, MIN_VERTICAL_VEL)
         self.rect.y += self.vertical_velocity
+
+        if self.rect.y < 0 or self.rect.y > win_height:
+            self.livent()
+
+        self.accel = GRAVITY
+
+        self.accel = GRAVITY
 
 # !SECTION
 
@@ -100,6 +114,16 @@ heights = [random_height(win.height) for i in range(win_rect.w // PIPE_SEP)]
 pipes = [Pipe(win_rect.w - i * PIPE_SEP, h[0], h[1], SPEED)
          for i, h in enumerate(heights)]
 
+bird = Bird(100, 360, "./assets/bird_up.png",
+            "./assets/bird_down.png")
+
+
+# def handle_key(e: KeyDownEvent):
+#     if e.key ==
+
+
+win.on(EventType.KeyDown, 'space-handler', print)
+
 
 def main(dt: int):
     win.draw_image("./assets/flappy-bird-1.png", win_rect)
@@ -107,6 +131,10 @@ def main(dt: int):
         pipe.render(win)
         pipe.update()
 
+    bird.render(win)
+    bird.update(win.height)
 
+
+win.off(EventType.KeyDown, 'space-handler')
 win.loop(main)
 win.close()
