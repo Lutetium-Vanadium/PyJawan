@@ -1,3 +1,4 @@
+from utils.constants import HorizontalAlignment, VerticalAlignment
 import cv2 as cv
 import numpy as np
 
@@ -12,10 +13,9 @@ from core.rect import Rect
 
 
 class Drawer:
-    def __init__(self, surf=None):
+    def __init__(self):
         self.fonts = {}
         self.images = {}
-        self.surface = surf
     # SECTION Helper Functions
 
     def _bernstein_poly(self, i, n, t):
@@ -48,7 +48,7 @@ class Drawer:
                      color.bgr, -1 if fill else thickness)
 
     def fill(self, surf, color=Color.Black):
-        surf.img[:, :] = color
+        surf.img[:, :] = color.bgr
 
     def line(self, surf, x1: int, y1: int, x2: int, y2: int, color=Color.Black, thickness=1):
         cv.line(surf.img, (x1, y1), (x2, y2), color.bgr, thickness)
@@ -89,18 +89,37 @@ class Drawer:
         grad = cv.resize(base, (w, h), cv.INTER_LINEAR)
         surf.img[y:y + h, x:x + w] = grad
 
-    def text(self, surf, text: str, x: int, y: int, size=10, font_name="sans-serif", font_path="", color=Color.Black):
+    def text(
+        self, surf, text: str, x: int, y: int,
+        size=10, font_name="sans-serif", font_path="", color=Color.Black,
+        h_align=HorizontalAlignment.Left,
+        v_align=VerticalAlignment.Center
+    ):
         if font_name in ("monospace", "serif", "sans-serif"):
-            font = ImageFont.truetype(f"utils/fonts/{font_name}.ttf", size)
+            font = ImageFont.truetype(f"../utils/fonts/{font_name}.ttf", size)
         else:
             font = ImageFont.load(font_path, size)
+
         img = Image.fromarray(surf.img)
         draw = ImageDraw.Draw(img)
+        (w, h) = draw.textsize(text, font=font)
+
+        if h_align == HorizontalAlignment.Center:
+            x -= w // 2
+        elif h_align == HorizontalAlignment.Right:
+            x -= w
+
+        if v_align == VerticalAlignment.Center:
+            y -= h // 2
+        elif v_align == VerticalAlignment.Bottom:
+            y -= h
+
         draw.text((x, y), text, font=font, fill=color.bgr)
         surf.img = np.array(img)
 
     def surface(self, surf, to_draw, x: int, y: int,):
-        surf.img[y:y + to_draw.width, x:x + to_draw.height] = to_draw.copy()
+        surf.img[y:y + to_draw.height, x:x +
+                 to_draw.width] = to_draw.img.copy()
 
     def image(self, surf, path: str, rect: Rect):
         im = self.images.get(path)

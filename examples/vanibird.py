@@ -2,10 +2,10 @@ import sys
 sys.path.append("../")
 from core import Window, Drawer, Surface, Rect, KeyDownEvent, Key
 from engine import Sprite
-from utils import FRAME_RATE, EventType, Color
+from utils import FRAME_RATE, EventType, Color, HorizontalAlignment, VerticalAlignment
 import os
 from random import randint
-from typing import Tuple
+from typing import Tuple, List
 
 
 # SECTION Constants
@@ -57,11 +57,13 @@ class Pipe(Sprite):
         surf.draw_rect(self.rect.x, surf.height - self.bottom, self.width, self.bottom,
                        color=Color.Black, fill=True)
 
-    def update(self):
+    def update(self) -> int:
         self.rect.x -= self.speed
-
         if self.rect.x <= 0:
             self.rect.x = win_rect.w
+            return 1
+        else:
+            return 0
 
     def collides(self, sprite: Sprite) -> bool:
         return sprite.rect.collides(
@@ -76,12 +78,19 @@ class Bird(Sprite):
     def __init__(self, x, y, up_im: str, down_im: str, accel=GRAVITY):
         super().__init__(x, y, 40, 40)
         self.accel = accel
+        self.init_pos = (x, y)
         self.up_im = up_im
         self.down_im = down_im
         self.vertical_velocity = 0
+        self.alive = False
 
     def jump(self):
         self.accel = UP_ACCEL
+
+    def reset(self):
+        self.alive = True
+        self.rect.x = self.init_pos[0]
+        self.rect.y = self.init_pos[1]
 
     def render(self, surf: Surface):
         if not self.alive:
@@ -109,7 +118,7 @@ class Bird(Sprite):
 # SECTION Main functionality
 
 
-win = Window(1280, 720)
+win = Window(1280, 720, "Flappy Bird - PyJawan")
 win_rect = Rect(0, 0, 1280, 720)
 
 heights = [random_height(win.height) for i in range(win_rect.w // PIPE_SEP)]
@@ -120,15 +129,30 @@ bird = Bird(100, 360, "./assets/bird_up.png",
             "./assets/bird_down.png",)
 
 
+def reset():
+    global bird, pipes, score
+    bird.reset()
+    pipes = [Pipe(win_rect.w - i * PIPE_SEP + 100, h[0], h[1],
+                  SPEED, win.height) for i, h in enumerate(heights)]
+    score = 0
+
+
 def handle_key(e: KeyDownEvent):
+    print(e.key)
     if e.key == Key.space:
-        bird.jump()
+        if bird.alive:
+            bird.jump()
+    if e.char == 'r':
+        reset()
 
 
-win.on(EventType.KeyDown, 'space-handler', handle_key)
+win.on(EventType.KeyDown, 'key-handler', handle_key)
+
+score = 0
 
 
-def main(dt: int):
+def main(_):
+    global score
     if bird.alive:
         win.draw_image("./assets/flappy-bird-1.png", win_rect)
         bird.render(win)
@@ -137,11 +161,16 @@ def main(dt: int):
             if pipe.collides(bird):
                 bird.kill()
             pipe.render(win)
-            pipe.update()
+            score += pipe.update()
 
         bird.update(win.height)
+        win.draw_text(f"Score: {score}", (win.width - 10), 10, size=20, font_name="monospace",
+                      color=Color.AliceBlue, h_align=HorizontalAlignment.Right)
+    else:
+        win.draw_text("Please press <R> to start", win.width // 2, win.height // 2, size=40, font_name="monospace",
+                      color=Color.AliceBlue, h_align=HorizontalAlignment.Center, v_align=VerticalAlignment.Center)
 
 
-win.loop(main, 20)
-win.off(EventType.KeyDown, 'space-handler')
+win.loop(main, 10)
+win.off(EventType.KeyDown, 'key-handler')
 win.close()

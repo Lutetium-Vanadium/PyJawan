@@ -9,3 +9,17 @@ class EventType(Enum):
     KeyDown = auto()
     MouseMove = auto()
     MouseClick = auto()
+
+
+@unique
+class HorizontalAlignment(Enum):
+    Left = auto()
+    Right = auto()
+    Center = auto()
+
+
+@unique
+class VerticalAlignment(Enum):
+    Top = auto()
+    Center = auto()
+    Bottom = auto()

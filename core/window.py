@@ -9,7 +9,7 @@ from core.surface import Surface
 
 
 class Window(Surface):
-    def __init__(self, width: int, height: int, name="GUI lib"):
+    def __init__(self, width: int, height: int, name="PyJawan"):
         super().__init__(width, height)
         self.name = name
         self.window = cv.namedWindow(

@@ -1,5 +1,5 @@
 from core import Rect, Surface, Drawer, Window
-from utils.constants import EventType
+from utils.constants import EventType, HorizontalAlignment, VerticalAlignment
 from types import FunctionType
 from utils import Color
 
@@ -51,27 +51,27 @@ class Button:
             surf.draw_rect(self.x, self.y, self.w,
                            self.h, bg_col, fill=True)
         else:
-            surf.draw_circle(self.x+self.border_radius, self.y +
+            surf.draw_circle(self.x + self.border_radius, self.y +
                              self.border_radius, self.border_radius, color=bg_col, fill=True)
 
-            surf.draw_circle(self.x+self.border_radius, self.y + self.h -
+            surf.draw_circle(self.x + self.border_radius, self.y + self.h -
                              self.border_radius, self.border_radius, color=bg_col, fill=True)
 
-            surf.draw_circle(self.x+self.w-self.border_radius, self.y +
+            surf.draw_circle(self.x + self.w - self.border_radius, self.y +
                              self.border_radius, self.border_radius, color=bg_col, fill=True)
 
-            surf.draw_circle(self.x+self.w-self.border_radius, self.y + self.h -
+            surf.draw_circle(self.x + self.w - self.border_radius, self.y + self.h -
                              self.border_radius, self.border_radius, color=bg_col, fill=True)
 
             surf.draw_rect(self.x + self.border_radius, self.y, self.w - 2 *
                            self.border_radius, self.border_radius, color=bg_col, fill=True)
 
-            surf.draw_rect(self.x, self.y+self.border_radius, self.w,
-                           self.h-2*self.border_radius, color=bg_col, fill=True)
+            surf.draw_rect(self.x, self.y + self.border_radius, self.w,
+                           self.h - 2 * self.border_radius, color=bg_col, fill=True)
 
-            surf.draw_rect(self.x + self.border_radius, self.y+self.h-self.border_radius, self.w - 2*self.border_radius,
+            surf.draw_rect(self.x + self.border_radius, self.y + self.h - self.border_radius, self.w - 2 * self.border_radius,
                            self.border_radius, color=bg_col, fill=True)
 
         if self.text and len(self.text):
-            surf.draw_text(self.text, self.x + 2, self.y + self.h/2 -
-                           self.font_size / 2, self.font_size, color=text_col)
+            surf.draw_text(self.text, self.x + self.w // 2, self.y + self.h / 2, self.font_size,
+                           color=text_col, h_align=HorizontalAlignment.Center, v_align=VerticalAlignment.Center)
