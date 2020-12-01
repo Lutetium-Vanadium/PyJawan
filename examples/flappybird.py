@@ -132,6 +132,7 @@ bird = Bird(100, 360, "./assets/bird_up.png",
 def reset():
     global bird, pipes, score
     bird.reset()
+    heights = [random_height(win.height) for i in range(win_rect.w // PIPE_SEP)]
     pipes = [Pipe(win_rect.w - i * PIPE_SEP + 100, h[0], h[1],
                   SPEED, win.height) for i, h in enumerate(heights)]
     score = 0
