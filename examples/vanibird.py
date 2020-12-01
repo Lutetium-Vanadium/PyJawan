@@ -138,12 +138,13 @@ def reset():
 
 
 def handle_key(e: KeyDownEvent):
-    print(e.key)
     if e.key == Key.space:
         if bird.alive:
             bird.jump()
-    if e.char == 'r':
+    elif e.char == 'r':
         reset()
+    elif e.char == 'q':
+        win.quit()
 
 
 win.on(EventType.KeyDown, 'key-handler', handle_key)

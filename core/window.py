@@ -23,6 +23,7 @@ class Window(Surface):
         }
         self.mouseEvent = None
         self._registerListener()
+        self.stop = False
 
     @property
     def height(self):
@@ -45,13 +46,17 @@ class Window(Surface):
         return True
 
     def loop(self, main: FunctionType, delay=50):
-        while self.render():
+        while self.render() or not self.stop:
             current_time = time.time()
             key = cv.waitKey(delay) & 0xFF
             dt = time.time() - current_time
+            main(dt)
+            dt = time.time() - current_time
             if dt < delay:
                 time.sleep((delay - dt) / 1000)
-            main(dt)
+
+    def quit(self):
+        self.stop = True
 
     def close(self):
         cv.destroyAllWindows()
