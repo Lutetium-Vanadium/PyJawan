@@ -46,7 +46,7 @@ class Window(Surface):
         return True
 
     def loop(self, main: FunctionType, delay=50):
-        while self.render() or not self.stop:
+        while self.render():
             current_time = time.time()
             key = cv.waitKey(delay) & 0xFF
             dt = time.time() - current_time
@@ -54,6 +54,8 @@ class Window(Surface):
             dt = time.time() - current_time
             if dt < delay:
                 time.sleep((delay - dt) / 1000)
+            if self.stop:
+                break
 
     def quit(self):
         self.stop = True

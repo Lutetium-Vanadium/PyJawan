@@ -1,3 +1,4 @@
+import os
 from utils.constants import HorizontalAlignment, VerticalAlignment
 import cv2 as cv
 import numpy as np
@@ -10,6 +11,8 @@ from numpy.core.numeric import zeros_like
 from utils.color import Color
 from core.rect import Rect
 # from core.surface import Surface
+
+BASE_DIR = os.path.join(os.path.abspath(os.pardir), "utils", "fonts")
 
 
 class Drawer:
@@ -96,7 +99,7 @@ class Drawer:
         v_align=VerticalAlignment.Center
     ):
         if font_name in ("monospace", "serif", "sans-serif"):
-            font = ImageFont.truetype(f"../utils/fonts/{font_name}.ttf", size)
+            font = ImageFont.truetype(os.path.join(BASE_DIR, f"{font_name}.ttf"), size)
         else:
             font = ImageFont.load(font_path, size)
 
