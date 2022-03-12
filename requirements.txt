@@ -1,5 +1,5 @@
 opencv-python==4.2.0.34
-Pillow==7.1.2
+Pillow==9.0.1
 numpy==1.18.4
 pynput==1.6.8
 
